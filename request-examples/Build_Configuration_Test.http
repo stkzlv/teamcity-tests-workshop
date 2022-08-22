@@ -1,0 +1,114 @@
+### 0. Get CSRF token
+GET http://admin:admin@localhost:8111/authenticationTest.html?csrf
+Accept: application/json
+
+### 1. Create project
+POST http://admin:admin@localhost:8111/app/rest/projects
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: 74edec5d-1c35-4be8-854f-36ae4ed911f8
+
+{
+  "parentProject": {
+    "locator": "_Root"
+  },
+  "name": "Test Project",
+  "id": "testProjectId",
+  "copyAllAssociatedSettings": true
+}
+
+### 2. Create VCS
+POST http://admin:admin@localhost:8111/app/rest/vcs-roots
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: c4063ac6-ced7-4fe0-a090-5ed99849b77a
+
+{
+  "id": "MyCustomRootId",
+  "name": "MyCustomRoot",
+  "vcsName": "jetbrains.git",
+  "project": {
+    "id": "testProjectId"
+  },
+  "properties": {
+    "property": [
+      {
+        "name": "authMethod",
+        "value": "ANONYMOUS"
+      },
+      {
+        "name": "branch",
+        "value": "refs/heads/master"
+      },
+      {
+        "name": "url",
+        "value": "https://github.com/AlexPshe/spring-core-for-qa"
+      }
+    ]
+  }
+}
+
+### 3. Create build configuration
+POST http://admin:admin@localhost:8111/app/rest/buildTypes
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: f946cf92-f940-4998-a399-823204c4dfb5
+
+{
+  "id": "myBuildId",
+  "name": "Test build",
+  "project": {
+    "id": "testProjectId"
+  },
+  "parameters": {
+    "property": [
+      {
+        "name": "myBuildParameter",
+        "value": "myValue"
+      }
+    ]
+  },
+  "steps": {
+    "step": [
+      {
+        "name": "myCommandLineStep",
+        "type": "simpleRunner",
+        "properties": {
+          "count": 3,
+          "property": [
+            {
+              "name": "script.content",
+              "value": "echo \"Hello, world!\""
+            },
+            {
+              "name": "teamcity.step.mode",
+              "value": "default"
+            },
+            {
+              "name": "use.custom.script",
+              "value": "true"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+
+### 4. Run build configuration
+POST http://admin:admin@localhost:8111/app/rest/buildQueue
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: da3131b6-6c9c-4cab-bd33-fe4d484326a9
+
+{
+  "buildType": {
+    "id": "myBuildId"
+  }
+}
+
+### 5. Check success build results
+GET http://admin:admin@localhost:8111/app/rest/builds/id:2
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: da3131b6-6c9c-4cab-bd33-fe4d484326a9
