@@ -1,15 +1,25 @@
 package api;
 
 import org.testng.annotations.Test;
-import org.workshop.api.requests.CheckedRequest;
+import org.workshop.api.enums.BuildStatus;
+import org.workshop.api.enums.StepType;
+import org.workshop.api.generators.StepGenerator;
+import org.workshop.api.models.Build;
 
 public class BuildConfigurationTest extends BaseTest {
     @Test
     public void buildConfigurationTest() {
-        var testData = testDataGenerator.generate();
+        testData.getBuildType().setSteps(
+                new StepGenerator().getBasicStep(StepType.SIMPLE_RUNNER, "echo \"Hello, world!\""));
 
-        var createdProject = new CheckedRequest().createProject(testData.getNewProjectDescription());
+        checkedRequest.createProject(testData.getNewProjectDescription());
+        checkedRequest.createVCS(testData.getVcsRoot());
+        checkedRequest.createBuildConfiguration(testData.getBuildType());
 
-        softy.assertThat(createdProject.getId()).isEqualTo(testData.getNewProjectDescription().getId());
+        var build = checkedRequest.runBuildConfiguration(Build.builder().buildType(testData.getBuildType()).build());
+        checkedRequest.waitUntilBuildFinished(build.getId());
+        build = checkedRequest.getBuild(build.getId());
+
+        softy.assertThat(build.getStatus()).isEqualTo(BuildStatus.SUCCESS.getValue());
     }
 }

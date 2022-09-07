@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 @Builder
-public class BuildType {
+public class VCSRoot {
     private String id;
     private String name;
+    private String vcsName;
     private Project project;
-    private Properties parameters;
-    private Steps steps;
+    private Properties properties;
 }
