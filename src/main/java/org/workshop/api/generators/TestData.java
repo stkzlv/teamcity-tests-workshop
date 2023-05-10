@@ -5,7 +5,7 @@ import lombok.Data;
 import org.workshop.api.models.BuildType;
 import org.workshop.api.models.NewProjectDescription;
 import org.workshop.api.models.VCSRoot;
-import org.workshop.api.requests.Request;
+import org.workshop.api.requests.uncheckedRequests.UncheckedRequests;
 
 @Data
 @Builder
@@ -15,9 +15,9 @@ public class TestData {
     private BuildType buildType;
 
     public void delete() {
-        var request = new Request();
-        request.deleteProject(newProjectDescription.getId());
-        request.deleteVCS(vcsRoot.getId());
-        request.deleteBuildConfiguration(buildType.getId());
+        var requests = new UncheckedRequests();
+        requests.projectRequest.delete(newProjectDescription.getId());
+        requests.vcsRequest.delete(vcsRoot.getId());
+        requests.buildTypeRequest.delete(buildType.getId());
     }
 }

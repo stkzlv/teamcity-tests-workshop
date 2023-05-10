@@ -7,20 +7,24 @@ import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
+import org.workshop.api.Config;
 import org.workshop.api.generators.TestData;
 import org.workshop.api.generators.TestDataGenerator;
-import org.workshop.api.requests.CheckedRequest;
+import org.workshop.api.requests.checkedRequests.CheckedRequests;
+import org.workshop.api.requests.uncheckedRequests.UncheckedRequests;
 
 public class BaseTest {
     public final TestDataGenerator testDataGenerator = new TestDataGenerator();
-    public final CheckedRequest checkedRequest = new CheckedRequest();
+    public final UncheckedRequests unchecked = new UncheckedRequests();
+    public final CheckedRequests checked = new CheckedRequests();
+
     public TestData testData;
     public SoftAssertions softy;
 
     @BeforeSuite
     public void setup() {
         RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
-        RestAssured.baseURI = "http://admin:admin@localhost:8111";
+        RestAssured.baseURI = Config.getProperty("baseUrl");
     }
 
     @BeforeTest

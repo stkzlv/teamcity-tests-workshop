@@ -12,13 +12,13 @@ public class BuildConfigurationTest extends BaseTest {
         testData.getBuildType().setSteps(
                 new StepGenerator().getBasicStep(StepType.SIMPLE_RUNNER, "echo \"Hello, world!\""));
 
-        checkedRequest.createProject(testData.getNewProjectDescription());
-        checkedRequest.createVCS(testData.getVcsRoot());
-        checkedRequest.createBuildConfiguration(testData.getBuildType());
+        checked.projectRequest.create(testData.getNewProjectDescription());
+        checked.vcsRequest.create(testData.getVcsRoot());
+        checked.buildTypeRequest.create(testData.getBuildType());
 
-        var build = checkedRequest.runBuildConfiguration(Build.builder().buildType(testData.getBuildType()).build());
-        checkedRequest.waitUntilBuildFinished(build.getId());
-        build = checkedRequest.getBuild(build.getId());
+        var build = checked.buildRequest.create(Build.builder().buildType(testData.getBuildType()).build());
+        checked.buildRequest.waitUntilFinished(build.getId());
+        build = checked.buildRequest.get(build.getId().toString());
 
         softy.assertThat(build.getStatus()).isEqualTo(BuildStatus.SUCCESS.getValue());
     }
