@@ -6,9 +6,11 @@ import org.workshop.api.enums.StepType;
 import org.workshop.api.generators.StepGenerator;
 import org.workshop.api.models.Build;
 
-public class BuildConfigurationTest extends BaseTest {
+public class BuildConfigurationTest extends BaseApiTest {
     @Test
     public void buildConfigurationTest() {
+        checked.userRequest.create(testData.getUser());
+
         testData.getBuildType().setSteps(
                 new StepGenerator().getBasicStep(StepType.SIMPLE_RUNNER, "echo \"Hello, world!\""));
 

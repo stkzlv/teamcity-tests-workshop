@@ -1,15 +1,23 @@
 package org.workshop.api.requests.uncheckedRequests;
 
 import io.restassured.response.Response;
+import org.workshop.api.models.User;
+import org.workshop.api.requests.CrudInterface;
+import org.workshop.api.specifications.Specifications;
 
 import static io.restassured.RestAssured.given;
 
-public class ProjectRequest implements UncheckedRequestInterface {
+public class ProjectRequest  implements CrudInterface {
+    private User user;
     private static final String PROJECT_ENDPOINT = "/app/rest/projects";
+
+    public ProjectRequest(User user) {
+        this.user = user;
+    }
 
     @Override
     public Response create(Object project) {
-        return given().spec(spec.reqSpec()).body(project).post(PROJECT_ENDPOINT);
+        return given().spec(Specifications.spec().getUserSpec(user)).body(project).post(PROJECT_ENDPOINT);
     }
 
     @Override
@@ -24,6 +32,6 @@ public class ProjectRequest implements UncheckedRequestInterface {
 
     @Override
     public Response delete(String id) {
-        return given().spec(spec.reqSpec()).delete(PROJECT_ENDPOINT + "/id:" + id);
+        return given().spec(Specifications.spec().getUserSpec(user)).delete(PROJECT_ENDPOINT + "/id:" + id);
     }
 }

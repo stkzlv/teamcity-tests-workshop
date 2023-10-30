@@ -1,5 +1,8 @@
 package org.workshop.api.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum BuildStatus {
     SUCCESS("SUCCESS");
     private final String value;
@@ -8,7 +11,4 @@ public enum BuildStatus {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
 }

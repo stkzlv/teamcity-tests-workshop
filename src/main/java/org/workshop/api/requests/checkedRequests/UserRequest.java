@@ -1,22 +1,21 @@
 package org.workshop.api.requests.checkedRequests;
 
 import org.apache.http.HttpStatus;
-import org.workshop.api.models.Project;
 import org.workshop.api.models.User;
 import org.workshop.api.requests.CrudInterface;
 import org.workshop.api.requests.UncheckedRequests;
 
-public class ProjectRequest implements CrudInterface {
+public class UserRequest implements CrudInterface {
     private User user;
-    public ProjectRequest(User user) {
+    public UserRequest(User user) {
         this.user = user;
     }
 
     @Override
-    public Project create(Object dto) {
-        return new UncheckedRequests(user).projectRequest.create(dto)
+    public Object create(Object dto) {
+        return new UncheckedRequests(user).userRequest.create(dto)
                 .then().assertThat().statusCode(HttpStatus.SC_OK)
-                .extract().response().as(Project.class);
+                .extract().response().as(User.class);
     }
 
     @Override
@@ -30,8 +29,8 @@ public class ProjectRequest implements CrudInterface {
     }
 
     @Override
-    public String delete(String id) {
-        return new UncheckedRequests(user).projectRequest.delete(id)
+    public Object delete(String username) {
+        return new UncheckedRequests(user).userRequest.delete(username)
                 .then().assertThat().statusCode(HttpStatus.SC_NO_CONTENT)
                 .extract().response().asString();
     }

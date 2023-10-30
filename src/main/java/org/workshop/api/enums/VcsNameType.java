@@ -1,5 +1,8 @@
 package org.workshop.api.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum VcsNameType {
     JETBRAINS_GIT("jetbrains.git");
 
@@ -8,7 +11,4 @@ public enum VcsNameType {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
 }

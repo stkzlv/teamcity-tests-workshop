@@ -1,15 +1,15 @@
 package org.workshop.api.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum AuthMethod {
     ANONYMOUS("ANONYMOUS");
 
-    private String value;
+    private final String value;
 
     AuthMethod(String value) {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
 }

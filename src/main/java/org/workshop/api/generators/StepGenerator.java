@@ -5,16 +5,17 @@ import org.workshop.api.models.Step;
 import org.workshop.api.models.Steps;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class StepGenerator {
     private final RandomData randomData = new RandomData();
 
     public Steps getBasicStep(StepType stepType, String stepContent) {
-        return Steps.builder().step(Arrays.asList(Step.builder()
-                .name(randomData.getString())
-                .type(stepType.getValue())
-                .properties(new PropertiesGenerator().getBasicStepProperties(stepContent))
-                .build()))
+        return Steps.builder().step(Collections.singletonList(Step.builder()
+                        .name(randomData.getString())
+                        .type(stepType.getValue())
+                        .properties(new PropertiesGenerator().getBasicStepProperties(stepContent))
+                        .build()))
                 .build();
     }
 }
