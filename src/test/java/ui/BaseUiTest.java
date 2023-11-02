@@ -2,36 +2,28 @@ package ui;
 
 import api.BaseTest;
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
-import okhttp3.Request;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.BeforeSuite;
 import org.workshop.api.Config;
-import org.workshop.api.generators.RandomData;
-import org.workshop.api.models.User;
-import org.workshop.api.requests.checkedRequests.AuthRequest;
 import org.workshop.api.requests.checkedRequests.UserRequest;
 import org.workshop.ui.pages.LoginPage;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class BaseUiTest extends BaseTest {
     private static final String TCSESSIONID = "TCSESSIONID";
 
     public void asAuthorisedUser() {
-        var user = User.builder().username(new RandomData().getString()).password(new RandomData().getString()).build();
+        var user = testData.getUser();
         new UserRequest(user).create(user);
-        new LoginPage().login(user.getUsername(), user.getPassword());
+        new LoginPage().open().login(user.getUsername(), user.getPassword());
     }
 
 
     @BeforeSuite
     public void beforeAll() {
-        Configuration.baseUrl = Config.getProperty("baseUiUrl");
+        Configuration.baseUrl = "http://" + Config.getProperty("host");
         Configuration.remote = "http://localhost:4444/wd/hub";
         Configuration.reportsFolder = "target/surefire-reports";
         Configuration.downloadsFolder = "target/downloads";

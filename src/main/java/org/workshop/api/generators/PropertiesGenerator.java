@@ -14,7 +14,7 @@ public class PropertiesGenerator {
                 .property(Arrays.asList(
                         new Property("authMethod", AuthMethod.ANONYMOUS.getValue()),
                         new Property("branch", "refs/heads/" + randomData.getString()),
-                        new Property("url", "https://github.com/AlexPshe/" + randomData.getString())
+                        new Property("url", "https://github.com/AlexPshe/spring-core-for-qa")
                 ))
                 .build();
     }

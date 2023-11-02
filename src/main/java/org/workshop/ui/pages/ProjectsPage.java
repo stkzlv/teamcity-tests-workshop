@@ -13,7 +13,6 @@ public class ProjectsPage extends Page {
     }
 
 
-    @Override
     public Page open() {
         return null;
     }

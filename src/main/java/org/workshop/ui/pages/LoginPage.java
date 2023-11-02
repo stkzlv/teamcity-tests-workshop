@@ -10,7 +10,6 @@ public class LoginPage extends Page {
     public SelenideElement inputPassword = element("input[id='password']");
     public SelenideElement inputSubmitLogin = element("input[class$='loginButton']");
 
-    @Override
     public LoginPage open() {
         Selenide.open("/login.html");
         return new LoginPage();
@@ -19,6 +18,7 @@ public class LoginPage extends Page {
     public ProjectsPage login(String username, String password) {
         inputUsername.sendKeys(username);
         inputPassword.sendKeys(password);
+        inputSubmitLogin.click();
         return new ProjectsPage();
     }
 }
