@@ -1,5 +1,6 @@
 package org.workshop.api.requests.uncheckedRequests;
 
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.workshop.api.models.User;
 import org.workshop.api.requests.CrudInterface;
@@ -17,7 +18,7 @@ public class UserRequest implements CrudInterface {
 
     @Override
     public Response create(Object user) {
-        return given().spec(Specifications.spec().getAdminReqSpec()).body(user).post( USER_ENDPOINT);
+        return given().spec(Specifications.spec().getAdminReqSpec(ContentType.JSON)).body(user).post( USER_ENDPOINT);
     }
 
     @Override

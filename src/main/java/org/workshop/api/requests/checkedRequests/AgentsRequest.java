@@ -1,8 +1,10 @@
 package org.workshop.api.requests.checkedRequests;
 
 import org.apache.http.HttpStatus;
+import org.assertj.core.api.Assertions;
 import org.workshop.api.models.*;
-import org.workshop.api.requests.UncheckedRequests;
+
+import java.util.Objects;
 
 public class AgentsRequest {
     private final org.workshop.api.requests.uncheckedRequests.AgentsRequest agentsRequest = new org.workshop.api.requests.uncheckedRequests.AgentsRequest();
@@ -13,17 +15,17 @@ public class AgentsRequest {
                 .extract().response().as(Agents.class);
     }
 
-    public Boolean authorize(User user, String agentLocator, EnabledInfo enabledInfo) {
-        return agentsRequest.authorize(user, agentLocator, enabledInfo)
+    public String authorize(String agentLocator) {
+        return agentsRequest.authorize(agentLocator)
                 .then().assertThat().statusCode(HttpStatus.SC_OK)
-                .extract().as(Boolean.class);
+                .extract().asString();
     }
 
-    public void authorizeAgent(User user) {
+    public void authorizeAgent() {
         Agent firstAgent = getAll("?locator=authorized:any").getAgent().get(0);
         if (firstAgent.getAuthorized()== null || !firstAgent.getAuthorized()) {
-            authorize(user, "id:" + firstAgent.getTypeId().toString(),
-                    EnabledInfo.builder().comment(Comment.builder().text("").build()).status(true).build());
+            String result = authorize("id:" + firstAgent.getTypeId().toString());
+            Assertions.assertThat(Objects.equals(result, "true"));
         }
     }
 }

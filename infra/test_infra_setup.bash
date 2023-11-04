@@ -15,12 +15,14 @@ workdirs=($teamcity_server_workdir $teamcity_agent_workdir $selenoid_workdir)
 
 cd infra
 
+echo "Deleting all containers"
+
 rm -rf $workdir
 mkdir $workdir
 cd $workdir
 
-for workdir in "${workdirs[@]}"; do
-  mkdir $workdir
+for dir in "${workdirs[@]}"; do
+  mkdir $dir
 done
 
 for name in "${container_names[@]}"; do
@@ -82,15 +84,24 @@ teamcity_server_url="http://$ip:8111"
 
 echo "$teamcity_server_container_name is running on $teamcity_server_url"
 
-cd infra/$teamcity_tests_infrastructure/$teamcity_agent_workdir
+cd infra/$workdir/$teamcity_agent_workdir
 
 docker run -d --name $teamcity_agent_container_name -e SERVER_URL=$teamcity_server_url  \
     -v $(pwd)/conf:/data/teamcity_agent/conf  \
     jetbrains/teamcity-agent
 
 
-##echo "Run API tests .."
-##mvn test -DsuiteXmlFile=testng-suites/api-suite.xml
-##
-##echo "Run UI tests .."
-##mvn test -DsuiteXmlFile=testng-suites/ui-suite.xml
+cd .. && cd .. && cd ..
+
+echo "WE ARE HERE $(pwd)"
+
+echo "host=$ip:8111\nsuperUserToken=$superuser_token\nremote=true" > $teamcity_tests_directory/src/main/resources/config.properties
+
+echo "New config.properties file"
+cat $teamcity_tests_directory/src/main/resources/config.properties
+
+echo "Run API tests .."
+mvn test -DsuiteXmlFile=testng-suites/api-suite.xml
+
+echo "Run UI tests .."
+mvn test -DsuiteXmlFile=testng-suites/ui-suite.xml

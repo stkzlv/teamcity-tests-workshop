@@ -17,21 +17,23 @@ public class Specifications {
 
     private Map<String, RequestSpecification> specStorage;
 
-    private Specifications(){
+    private Specifications() {
         specStorage = new HashMap<>();
     }
 
     public static Specifications spec() {
-        if (spec == null) { spec = new Specifications(); }
-       return spec;
+        if (spec == null) {
+            spec = new Specifications();
+        }
+        return spec;
     }
 
     private RequestSpecification getAuthReqSpec(User user) {
         var requestSpecBuilder = new RequestSpecBuilder();
         requestSpecBuilder.setContentType(ContentType.JSON);
         requestSpecBuilder.setAccept(ContentType.JSON);
-        var csrfToken = new CheckedRequests(user).authRequest.getCsrfToken();
-        requestSpecBuilder.addHeader(CSRF_TOKEN, csrfToken);
+        var host = Config.getProperty("host");
+        requestSpecBuilder.setBaseUri("http://" + user.getUsername() + ":" + user.getPassword() + "@" + host);
         return requestSpecBuilder.build();
     }
 
@@ -42,14 +44,13 @@ public class Specifications {
         return requestSpecBuilder.build();
     }
 
-    public RequestSpecification getAdminReqSpec() {
+    public RequestSpecification getAdminReqSpec(ContentType contentType) {
         var requestSpecBuilder = new RequestSpecBuilder();
-        requestSpecBuilder.setContentType(ContentType.JSON);
-        requestSpecBuilder.setAccept(ContentType.JSON);
-
+        requestSpecBuilder.setContentType(contentType);
+        requestSpecBuilder.setAccept(contentType);
         var superUserToken = Config.getProperty("superUserToken");
         var host = Config.getProperty("host");
-        requestSpecBuilder.setBaseUri("http://:" + superUserToken+ "@" + host);
+        requestSpecBuilder.setBaseUri("http://:" + superUserToken + "@" + host);
         return requestSpecBuilder.build();
     }
 

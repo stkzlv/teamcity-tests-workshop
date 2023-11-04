@@ -5,14 +5,11 @@ import org.workshop.api.enums.BuildStatus;
 import org.workshop.api.enums.StepType;
 import org.workshop.api.generators.StepGenerator;
 import org.workshop.api.models.Build;
-import org.workshop.api.requests.checkedRequests.AgentsRequest;
 
 public class BuildConfigurationTest extends BaseApiTest {
     @Test
     public void buildConfigurationTest() {
         checked.userRequest.create(testData.getUser());
-        //new AgentsRequest().authorizeAgent(testData.getUser());
-
         testData.getBuildType().setSteps(
                 new StepGenerator().getBasicStep(StepType.SIMPLE_RUNNER, "echo \"Hello, world!\""));
 

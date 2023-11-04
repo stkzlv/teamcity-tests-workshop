@@ -27,6 +27,6 @@ public class BaseApiTest extends BaseTest {
 
     @BeforeTest
     public void authorizeAgent() {
-        //new AgentsRequest().authorizeAgent();
+        new AgentsRequest().authorizeAgent();
     }
 }
