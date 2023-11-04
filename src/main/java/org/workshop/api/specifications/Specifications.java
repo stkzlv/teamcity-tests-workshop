@@ -30,13 +30,8 @@ public class Specifications {
         var requestSpecBuilder = new RequestSpecBuilder();
         requestSpecBuilder.setContentType(ContentType.JSON);
         requestSpecBuilder.setAccept(ContentType.JSON);
-        var host = Config.getProperty("host");
-
-        requestSpecBuilder.setBaseUri("http://" + user.getUsername() + ":" + user.getPassword()+ "@" + host);
-
         var csrfToken = new CheckedRequests(user).authRequest.getCsrfToken();
         requestSpecBuilder.addHeader(CSRF_TOKEN, csrfToken);
-
         return requestSpecBuilder.build();
     }
 

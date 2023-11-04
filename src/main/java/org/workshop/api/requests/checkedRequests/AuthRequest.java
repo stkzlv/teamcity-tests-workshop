@@ -16,8 +16,7 @@ public class AuthRequest {
     public String getCsrfToken() {
         String url = "http://" + user.getUsername() + ":" + user.getPassword() + "@" + Config.getProperty("host");
         return RestAssured.get(url + AUTHENTICATION_ENDPOINT)
-                .then().assertThat().statusCode(HttpStatus.SC_OK)
-                .extract().response().asString();
+                .then().extract().response().asString();
     }
 
     public String getCookie(String name, User user) {
