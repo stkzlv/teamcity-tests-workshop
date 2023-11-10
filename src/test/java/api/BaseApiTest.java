@@ -19,10 +19,6 @@ public class BaseApiTest extends BaseTest {
     public void setup() {
         unchecked = new UncheckedRequests(testData.getUser());
         checked = new CheckedRequests(testData.getUser());
-
-        RequestSpecification requestSpec = RestAssured.given()
-                .filter(new RequestLoggingFilter())
-                .filter(new ResponseLoggingFilter());
     }
 
     @BeforeTest

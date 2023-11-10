@@ -27,11 +27,12 @@ public class StartUpPage extends Page {
     }
 
     public StartUpPage setupTeamCityServer() {
-        proceedButton.click();
         waitUntilPageIsLoaded();
         proceedButton.click();
         waitUntilPageIsLoaded();
-        acceptLicense.shouldBe(Condition.enabled, Duration.ofMinutes(3));
+        proceedButton.click();
+        waitUntilPageIsLoaded();
+        acceptLicense.shouldBe(Condition.enabled, Duration.ofMinutes(5));
         acceptLicense.scrollTo();
         acceptLicense.click();
         submitButton.click();

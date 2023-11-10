@@ -11,6 +11,8 @@ public class PropertiesGenerator {
 
     public Properties getBasicVcsProperties() {
         return Properties.builder()
+                .count(1)
+                .href("property/1")
                 .property(Arrays.asList(
                         new Property("authMethod", AuthMethod.ANONYMOUS.getValue()),
                         new Property("branch", "refs/heads/" + randomData.getString()),
@@ -21,6 +23,8 @@ public class PropertiesGenerator {
 
     public Properties getBasicStepProperties(String scriptContent) {
         return Properties.builder()
+                .count(1)
+                .href("basic-properties/1")
                 .property(Arrays.asList(
                         new Property("script.content", scriptContent),
                         new Property("teamcity.step.mode", "default"),

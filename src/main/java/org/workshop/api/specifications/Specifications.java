@@ -1,6 +1,9 @@
 package org.workshop.api.specifications;
 
+import com.github.viclovsky.swagger.coverage.SwaggerCoverageRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.checkerframework.checker.units.qual.C;
@@ -28,8 +31,16 @@ public class Specifications {
         return spec;
     }
 
+    private RequestSpecBuilder baseReqBuilder() {
+        var baseReqBuilder = new RequestSpecBuilder();
+        baseReqBuilder.addFilter(new RequestLoggingFilter());
+        baseReqBuilder.addFilter(new ResponseLoggingFilter());
+        baseReqBuilder.addFilter(new SwaggerCoverageRestAssured());
+        return baseReqBuilder;
+    }
+
     private RequestSpecification getAuthReqSpec(User user) {
-        var requestSpecBuilder = new RequestSpecBuilder();
+        var requestSpecBuilder = baseReqBuilder();
         requestSpecBuilder.setContentType(ContentType.JSON);
         requestSpecBuilder.setAccept(ContentType.JSON);
         var host = Config.getProperty("host");
@@ -38,14 +49,14 @@ public class Specifications {
     }
 
     private RequestSpecification getUnauthReqSpec() {
-        var requestSpecBuilder = new RequestSpecBuilder();
+        var requestSpecBuilder = baseReqBuilder();
         requestSpecBuilder.setContentType(ContentType.JSON);
         requestSpecBuilder.setAccept(ContentType.JSON);
         return requestSpecBuilder.build();
     }
 
     public RequestSpecification getAdminReqSpec(ContentType contentType) {
-        var requestSpecBuilder = new RequestSpecBuilder();
+        var requestSpecBuilder = baseReqBuilder();
         requestSpecBuilder.setContentType(contentType);
         requestSpecBuilder.setAccept(contentType);
         var superUserToken = Config.getProperty("superUserToken");

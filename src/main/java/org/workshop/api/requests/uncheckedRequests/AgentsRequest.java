@@ -2,8 +2,6 @@ package org.workshop.api.requests.uncheckedRequests;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.workshop.api.models.EnabledInfo;
-import org.workshop.api.models.User;
 import org.workshop.api.specifications.Specifications;
 
 import static io.restassured.RestAssured.given;

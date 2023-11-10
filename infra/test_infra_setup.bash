@@ -10,6 +10,11 @@ teamcity_agent_container_name="teamcity_agent_instance"
 selenoid_container_name="selenoid_instance"
 selenoid_ui_container_name="selenoid_ui_instance"
 
+export ips=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
+export ip=${ips%%$'\n'*}
+
+echo "Current IP: $ip"
+
 container_names=($teamcity_server_container_name $teamcity_agent_container_name $selenoid_container_name $selenoid_ui_container_name)
 workdirs=($teamcity_server_workdir $teamcity_agent_workdir $selenoid_workdir)
 
@@ -62,12 +67,9 @@ done
 
 docker run -d                                   \
             --name $selenoid_ui_container_name                                 \
-            -p 8080:8080                                    \
-            -v /var/run/docker.sock:/var/run/docker.sock    \
-            -v $(pwd)/config/:/etc/selenoid/:ro              \
-    aerokube/selenoid:latest-release
+            -p 80:8080 aerokube/selenoid-ui:latest-release --selenoid-uri "http://$ip:4444"
 
-sleep 10
+sleep 15
 
 cd .. && cd .. && cd ..
 
@@ -75,11 +77,12 @@ echo "Start Setup Tests .."
 
 mvn clean test -Dtest=SetupTest#startUpTest
 
+sleep 5
+
 superuser_token=$(grep -o 'Super user authentication token: [0-9]*' $teamcity_tests_directory/infra/$workdir/$teamcity_server_workdir/logs/teamcity-server.log | awk '{print $NF}')
 
 echo "super user token: '$superuser_token'"
 
-ip=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
 teamcity_server_url="http://$ip:8111"
 
 echo "$teamcity_server_container_name is running on $teamcity_server_url"

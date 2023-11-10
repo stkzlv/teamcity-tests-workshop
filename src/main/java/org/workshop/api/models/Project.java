@@ -1,10 +1,14 @@
 package org.workshop.api.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Project {
     private String id;
     private String name;
@@ -19,4 +23,5 @@ public class Project {
     private VcsRoots vcsRoots;
     private ProjectFeatures projectFeatures;
     private Projects projects;
+    private String description;
 }
