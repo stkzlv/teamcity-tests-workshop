@@ -1,0 +1,28 @@
+name: Java Lint
+
+on: [push, pull_request]
+
+jobs:
+  checkstyle:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Run Checkstyle
+        run: |
+          if [ -f ./mvnw ]; then
+            ./mvnw checkstyle:check
+          elif [ -f ./gradlew ]; then
+            ./gradlew checkstyleMain
+          else
+            echo "Maven or Gradle wrapper not found."
+            exit 1
+          fi
