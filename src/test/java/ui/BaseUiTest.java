@@ -2,6 +2,8 @@ package ui;
 
 import api.BaseTest;
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.BeforeSuite;
 import org.workshop.api.Config;
@@ -18,6 +20,14 @@ public class BaseUiTest extends BaseTest {
         var user = testData.getUser();
         new UserRequest(user).create(user);
         new LoginPage().open().login(user.getUsername(), user.getPassword());
+    }
+
+    @BeforeSuite
+    static void setupAllureReports() {
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
+                .screenshots(true)
+                .savePageSource(true)
+        );
     }
 
 

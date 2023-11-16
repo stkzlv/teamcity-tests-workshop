@@ -1,15 +1,14 @@
 package org.workshop.api.specifications;
 
 import com.github.viclovsky.swagger.coverage.SwaggerCoverageRestAssured;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import org.checkerframework.checker.units.qual.C;
 import org.workshop.api.Config;
 import org.workshop.api.models.User;
-import org.workshop.api.requests.CheckedRequests;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +35,7 @@ public class Specifications {
         baseReqBuilder.addFilter(new RequestLoggingFilter());
         baseReqBuilder.addFilter(new ResponseLoggingFilter());
         baseReqBuilder.addFilter(new SwaggerCoverageRestAssured());
+        baseReqBuilder.addFilter(new AllureRestAssured());
         return baseReqBuilder;
     }
 

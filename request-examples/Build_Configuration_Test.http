@@ -6,7 +6,7 @@ Accept: application/json
 POST http://admin:admin@localhost:8111/app/rest/projects
 Content-Type: application/json
 Accept: application/json
-X-TC-CSRF-Token: 090695ad-1d94-47a4-a6bd-af68446bd5d7
+X-TC-CSRF-Token: a347e281-ca70-4474-916f-b9b176fe4dd1
 
 {
   "parentProject": {
@@ -37,8 +37,7 @@ X-TC-CSRF-Token: c4063ac6-ced7-4fe0-a090-5ed99849b77a
         "value": "ANONYMOUS"
       },
       {
-        "name": "branch",
-        "value": "refs/heads/master"
+        "name": "branch"
       },
       {
         "name": "url",
