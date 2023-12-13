@@ -30,6 +30,8 @@ jobs:
         uses: docker://docker
         with:
           args: docker restart selenoid
+      - name: Verify services
+        run: ls -la /tmp/build/volume/selenoid-config/
       - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
