@@ -35,6 +35,7 @@ jobs:
           - 8111:8111
         volumes:
           - /tmp/build/volume/teamcity-server-logs:/opt/teamcity/logs
+          - /tmp/build/volume/teamcity-server-data:/data/teamcity_server/datadir
       teamcity_agent_instance:
         image: jetbrains/teamcity-agent
         env:
@@ -50,4 +51,4 @@ jobs:
         ports:
           - 80:8080
         options: >-
-          --selenoid-uri "http://localhost:4444"
+          -selenoid-uri "http://localhost:4444"
