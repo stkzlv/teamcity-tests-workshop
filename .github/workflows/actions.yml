@@ -19,8 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Java
-        run: sudo apt-get update && sudo apt-get -y install default-jre
+      - name: Verify services
+        run: ls -la /tmp/build/volume/teamcity-server-logs/
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
       - name: Start Setup Tests
         run: mvn clean test -Dtest=SetupTest#startUpTest
 
@@ -35,11 +39,15 @@ jobs:
         image: jetbrains/teamcity-agent
         env:
           SERVER_URL: "http://localhost:8111"
-      selenoid-chrome:
-        image: selenoid/chrome
-      # selenoid-ui:
-      #   image: aerokube/selenoid-ui:latest-release
-      #   ports:
-      #     - 8080:8080
-      #   options: >-
-      #     --selenoid-uri "http://localhost:4444"
+      selenoid:
+        image: aerokube/selenoid:latest-release
+        ports:
+          - 4444:4444
+        volumes:
+          - /tmp/build/volume/selenoid-config:/etc/selenoid
+      selenoid-ui:
+        image: aerokube/selenoid-ui:latest-release
+        ports:
+          - 80:8080
+        options: >-
+          --selenoid-uri "http://localhost:4444"
