@@ -24,6 +24,8 @@ jobs:
               ls -la /tmp/build/volume/teamcity-server-logs/
               ls -la /tmp/build/volume/selenoid-config/
               ls -la ${{ github.workspace }}
+              curl -I http://localhost:8111/healthCheck/healthy
+              curl -I http://localhost:8111/healthCheck/ready
       - name: Copy config
         run: sudo cp infra/browsers.json /tmp/build/volume/selenoid-config/
       - name: Restart selenoid
