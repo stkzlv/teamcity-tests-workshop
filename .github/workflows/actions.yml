@@ -24,9 +24,8 @@ jobs:
               ls -la /tmp/build/volume/teamcity-server-logs/
               ls -la /tmp/build/volume/selenoid-config/
               ls -la ${{ github.workspace }}
-              ls -la infra/
       - name: Copy config
-        run: cp infra/browsers.json /tmp/build/volume/selenoid-config/
+        run: sudo cp infra/browsers.json /tmp/build/volume/selenoid-config/
       - name: Restart selenoid
         uses: docker://docker
         with:
@@ -37,6 +36,10 @@ jobs:
           java-version: '17'
       - name: Start Setup Tests
         run: mvn clean test -Dtest=SetupTest#startUpTest
+      - name: Run API tests
+        run: mvn test -DsuiteXmlFile=testng-suites/api-suite.xml
+      - name: Run UI tests
+        run: mvn test -DsuiteXmlFile=testng-suites/ui-suite.xml
 
     services:
       teamcity-server-instance:
