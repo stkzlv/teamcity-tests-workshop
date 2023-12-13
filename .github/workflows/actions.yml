@@ -59,6 +59,7 @@ jobs:
           - 4444:4444
         volumes:
           - /tmp/build/volume/selenoid-config:/etc/selenoid
+        options: --name selenoid
       selenoid-ui:
         image: aerokube/selenoid-ui:latest-release
         ports:
