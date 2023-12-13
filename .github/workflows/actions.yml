@@ -20,7 +20,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Verify services
-        run: ls -la /tmp/build/volume/teamcity-server-logs/
+        run: |
+              ls -la /tmp/build/volume/teamcity-server-logs/
+              ls -la /tmp/build/volume/selenoid-config/
+              ls -la ${{ github.workspace }}
+              ls -la infra/
+      - name: Copy config
+        run: cp infra/browsers.json /tmp/build/volume/selenoid-config/
+      - name: Restart selenoid
+        uses: docker://docker
+        with:
+          args: docker restart selenoid
       - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
