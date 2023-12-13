@@ -30,7 +30,7 @@ jobs:
         ports:
           - 8111:8111
         volumes:
-          - build/volume/teamcity-server:/opt/teamcity/logs
+          - ${{ github.workspace }}/build/volume/teamcity-server-logs:/opt/teamcity/logs
       teamcity_agent_instance:
         image: jetbrains/teamcity-agent
         env:
