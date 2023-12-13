@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Java
-        run: apt-get update && apt-get -y install default-jre
+        run: sudo apt-get update && sudo apt-get -y install default-jre
       - name: Start Setup Tests
         run: mvn clean test -Dtest=SetupTest#startUpTest
 
@@ -29,6 +29,8 @@ jobs:
         image: jetbrains/teamcity-server
         ports:
           - 8111:8111
+        volumes:
+          - ${{ github.workspace }}/build/volume/teamcity-server:/opt/teamcity/logs
       teamcity_agent_instance:
         image: jetbrains/teamcity-agent
         env:
